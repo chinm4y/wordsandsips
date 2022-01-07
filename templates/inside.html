@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>َWords and Sips</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='css/style.css')}}"
+    />
+  </head>
+  <body>
+    <form class="box" action="{{url_for('menu')}}" method="Post">
+      <h1>Words and Sips</h1>
+      <input
+        type="number"
+        placeholder="Number of People"
+        id="quantity"
+        name="quantity"
+        min="1"
+        max="20"
+        required
+      />
+      <input type="text" name="start_time" id="currentDateTime" />
+      <input type="submit" name="" value="Confirm" />
+    </form>
+
+    <script>
+      var today = new Date();
+      var date =
+        today.getDate() +
+        '-' +
+        (today.getMonth() + 1) +
+        '-' +
+        today.getFullYear();
+      var time =
+        today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+      time = time.split(':');
+      let meridiemTime =
+        (time[0] >= 12 && (time[0] - 12 || 12) + ':' + time[1] + ' PM') ||
+        (Number(time[0]) || 12) + ':' + time[1] + ' AM';
+      var dateTime = date + ' ' + meridiemTime;
+      document.getElementById('currentDateTime').value = dateTime;
+      document.getElementById('currentDateTime').readOnly = true;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+{% extends "layout.html" %} {% block body %}
+
+<h1>Manage menu</h1>
+<hr />
+{% include "includes/message.html" %}
+
+<div class="row">
+  <div class="col-6">
+    <div class="card" style="width: 30rem">
+      <div class="card-body">
+        <form action="{{url_for('manage_menu')}}" method="POST">
+          <div class="mb-3">
+            <label for="Category" class="form-label">Category</label>
+            <select
+              name="category"
+              class="form-select"
+              id="Category"
+              aria-label="Default select example"
+            >
+              <option selected>Select Category</option>
+
+              <option value="Pizza">Pizza</option>
+              <option value="Maggi">Maggi</option>
+              <option value="Wraps">Wraps</option>
+              <option value="Grill Sandwiches">Grill Sandwiches</option>
+              <option value="Plain Sandwiches">Plain Sandwiches</option>
+              <option value="Non Veg">Non Veg</option>
+              <option value="Pasta">Pasta</option>
+              <option value="Hot Beverages">Hot Beverages</option>
+              <option value="Cold Beverages">Cold Beverages</option>
+              <option value="Burger">Burger</option>
+              <option value="Shakes">Shakes</option>
+              <option value="Munchies">Munchies</option>
+              <option value="French Fries">French Fries</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Nachos">Nachos</option>
+              <option value="Momos">Momos</option>
+              <option value="Sizzlers">Sizzlers</option>
+              <option value="Cigarette">Cigarette</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Item Name</label>
+            <input
+              name="item_name"
+              type="text"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="namehelp"
+            />
+            <div id="namehelp" class="form-text">
+              Avoid entering numbers and special characters in product name
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label"
+              >Item Price</label
+            >
+            <input
+              name="price"
+              type="number"
+              class="form-control"
+              id="exampleInputEmail1"
+              aria-describedby="namehelp"
+            />
+          </div>
+
+          <div class="mb-3 form-check">
+            <input
+              name="active_status"
+              type="checkbox"
+              class="form-check-input"
+              id="exampleCheck1"
+            />
+            <label class="form-check-label" for="exampleCheck1">Activate</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="card overflow-scroll" style="height: 30rem">
+      <div class="card-body">
+        <h5 class="card-title">Available Menu</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Item name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Price</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in menu.keys() %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+              <td>{{menu[item].name}}</td>
+              <td>{{menu[item].category}}</td>
+              <td>{{menu[item].price}}</td>
+              <td>
+                <i
+                  class="fa fa-trash-alt text-danger"
+                  onclick="delete_menu(`{{item}}`)"
+                ></i>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  async function delete_menu(item) {
+    console.log("hi");
+    const res = await fetch(`/delete_menu/${item}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    if (data["success"]) {
+      window.location.href = "/manage_menu";
+    }
+  }
+</script>
+
+{% endblock %}

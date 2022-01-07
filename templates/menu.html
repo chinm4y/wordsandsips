@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--  
+    Document Title
+    =============================================
+    -->
+    <title>Words and Sips</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+  </head>
+
+  <body>
+    <main>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="/">Words & Sips</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">
+                  Home
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <span class="text-white">
+                  {% if 'service_charge' in session %}
+                  &#8377;{{session.cart.cart_total + session.service_charge}} {%
+                  else %} &#8377;{{session.cart.cart_total}} {% endif %}
+                </span>
+                <a href="/checkout">
+                  <i class="fas fa-shopping-cart text-info pt-2"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container-fluid">{% include "includes/message.html" %}</div>
+      <div class="container my-5">
+        <h1 class="display-3 module-title font-alt mb-5">
+          Welcome to Words and Sips Book Cafe
+        </h1>
+        <div class="accordion accordion-flush" id="menuItems">
+          {% for category in categories %}
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="items_{{loop.index}}"></h2>
+            <div>
+              <div>
+                <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#toggle_{{loop.index}}"
+                aria-expanded="false"
+                aria-controls="toggle_{{loop.index}}"
+              >
+              <div class="px-2">
+                <img src="{{url_for('static',filename = 'assets/images/' + category.lower() + '.jfif')}}" height="50px" width="50px" margin="10px">
+
+              </div>
+              
+                {{category}}
+              </button>
+              </div>
+              
+            </div>
+
+            <div
+              id="toggle_{{loop.index}}"
+              class="accordion-collapse collapse"
+              aria-labelledby="items_{{loop.index}}"
+              data-bs-parent="#menuItems"
+            >
+              <div class="accordion-body">
+                <ul class="row">
+                  {% for item in menu.keys() %} {% if menu[item].category
+                  ==category %}
+                  <li class="col-6">
+                    <div class="card m-2 rounded-lg p-2">
+                      <div class="card-body">
+                        <span class="d-flex justify-content-between">
+                          {{menu[item].name}}
+                          <span>
+                            <button class="btn btn-sm">
+                              <a
+                                href="{{url_for('add_to_cart', product_id=item)}}"
+                              >
+                                <i
+                                  class="
+                                    fas
+                                    fa-shopping-basket
+                                    text-danger
+                                    mx-3
+                                  "
+                                  style="font-size: 1.5em; cursor: pointer"
+                                >
+                                </i>
+                              </a>
+                            </button>
+                            &#8377;{{menu[item].price}}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                  {% endif %} {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <footer class="footer mt-auto fixed-bottom text-center py-3 bg-light">
+        <div class="container">
+          <span class="text-muted">Copyright &copy; Words & Sips  |</span>
+          <span class="text-muted">Envisioned by &copy; ASCK</span>
+        </div>
+      </footer>
+    </main>
+    <!--  
+    JavaScriptsS
+    =============================================
+    -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

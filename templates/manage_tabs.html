@@ -1,0 +1,111 @@
+{% extends 'layout.html' %} {% block body %} {% include "includes/message.html"
+%}
+<h3>Recent orders</h3>
+<hr />
+<form action="{{url_for('add_member')}}" method="POST" class="col-8 my-4">
+  <div class="mb-3 form-floating">
+    <input
+      type="text"
+      class="form-control"
+      id="basic-url"
+      aria-describedby="Name"
+      placeholder="Name"
+      name="name"
+    />
+    <label for="basic-url" class="form-label">Name</label>
+  </div>
+  <div class="mb-3 form-floating">
+    <input
+      type="email"
+      class="form-control"
+      id="basic-url"
+      aria-describedby="Email"
+      placeholder="Email"
+      name="email"
+    />
+    <label for="basic-url" class="form-label">Email</label>
+  </div>
+  <div class="mb-3 form-floating">
+    <input
+      type="password"
+      class="form-control"
+      id="basic-url"
+      aria-describedby="Password"
+      placeholder="Password"
+      name="password"
+    />
+    <label for="basic-url" class="form-label">Password</label>
+  </div>
+  <button type="submit" class="btn btn-success btn-lg">Add</button>
+</form>
+{% if orders %}
+<div class="accordion accordion-flush" id="menuItems">
+  {% for id in orders.keys() %}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="items_{{loop.index}}">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#toggle_{{loop.index}}"
+        aria-expanded="false"
+        aria-controls="toggle_{{loop.index}}"
+      >
+        {{orders[id].order_no}} | {{orders[id].name}} |
+        {{orders[id].start_time}} | {{orders[id].location | capitalize}}
+      </button>
+    </h2>
+    <div
+      id="toggle_{{loop.index}}"
+      class="accordion-collapse collapse"
+      aria-labelledby="items_{{loop.index}}"
+      data-bs-parent="#menuItems"
+    >
+      <div class="accordion-body">
+        <ul class="row list-group">
+          <li class="col-6 list-group-item">
+            <div class="d-flex flex-column justify-content-between">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in orders[id].order %} {% if 'entry_fee' in
+                  item.keys() %}
+                  <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>Entry Fee</td>
+                    <td>{{orders[id].quantity}}</td>
+                    <td>{{item.entry_fee}}</td>
+                  </tr>
+                  {% else %}
+                  <tr>
+                    <th scope="row">{{loop.index}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.amount}}</td>
+                  </tr>
+                  {% endif %} {% endfor %}
+                </tbody>
+              </table>
+              <div class="d-flex justify-content-between">
+                <span> Total: &#8377; {{orders[id].total}} </span>
+                <a href="{{url_for('delete_order', id=id)}}">
+                  <button class="btn text-danger">&cross;</button>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %} No Orders to display! {% endif %} {% endblock %}

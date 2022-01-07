@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>Words and Sips</title>
+  </head>
+
+  <body style="background-image: url(/static/images/lib2.jpeg)">
+    <div class="container">
+      <div
+        class="card"
+        style="
+          width: 30rem;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          opacity: 90%;
+          background: black;
+          color: white;
+          padding: 1rem;
+        "
+      >
+        <div class="card-header">
+          <h3 class="text-center">Login</h3>
+        </div>
+        <div class="card-body">
+          {% include "includes/message.html" %}
+          <form action="{{url_for('tab_checkin')}}" method="POST">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="location"
+                value="inside"
+                id="inside"
+              />
+              <label class="form-check-label" for="inside"> Inside </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="location"
+                value="outside"
+                id="outside"
+              />
+              <label class="form-check-label" for="outside"> Outside </label>
+              <div class="mb-3">
+                <label for="quantity" class="form-label"
+                  >Number of people</label
+                >
+                <input
+                  name="quantity"
+                  type="number"
+                  class="form-control"
+                  id="quantity"
+                  aria-describedby="namehelp"
+                  min="1"
+                />
+              </div>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  class="form-control my-2"
+                  name="start_time"
+                  id="currentDateTime"
+                />
+              </div>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                id="table"
+                name="table"
+              >
+                <option selected>Select Table Number</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var today = new Date();
+      var date =
+        today.getDate() +
+        '-' +
+        (today.getMonth() + 1) +
+        '-' +
+        today.getFullYear();
+      var time =
+        today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+      time = time.split(':');
+      let meridiemTime =
+        (time[0] >= 12 && (time[0] - 12 || 12) + ':' + time[1] + ' PM') ||
+        (Number(time[0]) || 12) + ':' + time[1] + ' AM';
+      var dateTime = date + ' ' + meridiemTime;
+      document.getElementById('currentDateTime').value = dateTime;
+      document.getElementById('currentDateTime').readOnly = true;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+{% extends 'layout.html' %} {% block body %} {% include "includes/message.html"
+%}
+<h3>Sales</h3>
+
+<div class="row">
+    <div class="col-6">
+      <div class="card" style="width: 30rem">
+        <div class="card-body">
+          <form action="{{url_for('view_sales')}}" method="POST">
+            <div class="mb-3">
+              <label for="date" class="form-label">Date</label>
+              <select
+                name="date"
+                class="form-select"
+                id="date"
+                aria-label="Default select example"
+              >
+                <option selected>Select Date</option>
+
+                {% for date in sales.keys() %}
+                    <option>{{date}}</option>
+                {% endfor %}
+            </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
+            </div>
+            </div>
+            </div>
+            {% if sale %}
+            <div class="col-6">
+                <div class="card overflow-scroll" style="height: 30rem">
+                  <div class="card-body">
+                    <h5 class="card-title">Sale {{date}}</h5>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Category</th>
+                          <th scope="col">Item Name</th>
+                          <th scope="col">Sale</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in sale.keys() %}
+                        <tr>
+                          {% for i in sale[item] | sort(attribute = sale[item][i], reverse = True) %}
+                          <td>{{item}}</td>                            
+                          <td>{{i}}</td>
+                          <td>{{sale[item][i]}}</td>
+                        </tr>
+                            {%endfor%}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="col-6">
+                <div class="card overflow-scroll" style="height: 30rem">
+                  <div class="card-body">
+                    <h5 class="card-title">Sales</h5>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Item name</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in sales.keys() %}
+                        <tr>
+                          <th scope="row">{{loop.index}}</th>
+                          <td>{{item}}</td>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+</div>
+</div>
+</div>
+
+
+
+{% endblock %}

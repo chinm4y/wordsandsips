@@ -1,0 +1,88 @@
+{% extends "layout.html" %} {% block body %} {% include "includes/message.html"
+%}
+
+<h3>Recent orders</h3>
+<hr />
+
+<div class="row">
+  {% if orders %} {% for id in orders.keys() %}
+  <div class="col-4" id="print_{{id}}">
+    <div class="card m-2 overflow-scroll" style="height: 20rem">
+      <div class="card-body">
+        <h5 class="card-title">
+          Order No. {{orders[id].order_no}} | {{orders[id].name}} |
+          {{orders[id].start_time}} | Table {{orders[id].table}} |
+          {{orders[id].location | capitalize}}
+        </h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Item</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in orders[id].order %} {% if 'entry_fee' in item.keys()
+            %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+              <td>Entry Fee</td>
+              <td>{{orders[id].quantity}}</td>
+              <td>{{item.entry_fee}}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <th scope="row">{{loop.index}}</th>
+              <td>{{item.name}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.amount}}</td>
+            </tr>
+            {% endif %} {% endfor %}
+          </tbody>
+        </table>
+        <div class="text-right">Total: &#8377; {{orders[id].total}}</div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-primary" onclick="printDiv(`print_{{id}}`)">
+          Print
+        </button>
+        <button class="btn btn-success">
+          <a
+            class="text-white text-decoration-none"
+            href="{{url_for('checkout_order', order_id=id)}}"
+            >Checkout
+          </a>
+        </button>
+        <a
+          class="text-black text-decoration-none"
+          href="{{url_for('add_product', order_id=id)}}"
+        >
+          <button class="btn btn-outline-secondary">&plus;</button>
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %} {% else %} <span class="ms-2">No orders to display!</span> {%
+  endif %}
+</div>
+
+{% endblock %} {% block scripts %}
+
+<script>
+  setInterval(() => {
+    setInterval(location.reload(), 1000);
+  }, 30000);
+  function printDiv(divName) {
+    var printContents = document.getElementById(divName);
+    var cardFooter = printContents.getElementsByClassName("card-footer")[0];
+    cardFooter.remove();
+    w = window.open();
+    w.document.write(printContents.innerHTML);
+    w.print();
+    w.close();
+  }
+</script>
+
+{% endblock %}

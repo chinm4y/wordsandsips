@@ -1,0 +1,11 @@
+,-MsjMZIDQyz_SNLkpJYt,-MsjdAoOb9rEiW9p55FR
+location,inside,inside
+name,Ruchir,rajas123
+order,"[{'amount': 245, 'category': 'Sizzlers', 'name': 'Crispy Pasta Sizzler', 'product_id': '-MkkKYH9DQR2FOSO0ETb', 'quantity': 1}, {'entry_fee': 200}]","[{'amount': 180, 'category': 'Pizza', 'name': 'Margherita', 'product_id': '-Mjf2Ncq0kAPG00pL_0u', 'quantity': 1}, {'amount': 120, 'category': 'Non Veg', 'name': 'Chicken Burger', 'product_id': '-MkkCyAiwAiDKk_uefOG', 'quantity': 1}, {'amount': 85, 'category': 'Burger', 'name': 'Aloo Tikki Burger', 'product_id': '-MkkGSgGDUuWdD0pls76', 'quantity': 1}, {'entry_fee': 100}]"
+order_no,34821,99081
+quantity,2,1
+start_time,6-1-2022 5:58 PM,6-1-2022 7:15 PM
+status,CLOSED,CLOSED
+table,2,3
+total,245,385
+type,customer,customer

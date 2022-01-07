@@ -1,0 +1,106 @@
+{% extends 'layout.html' %} {% block body %} {% include "includes/message.html"
+%}
+<h3>Recent orders</h3>
+<hr />
+<form action="{{url_for('add_member')}}" method="POST" class="col-8 my-4">
+  <div class="mb-3 form-floating">
+    <input
+      type="text"
+      class="form-control"
+      id="basic-url"
+      aria-describedby="Name"
+      placeholder="Name"
+      name="name"
+    />
+    <label for="basic-url" class="form-label">Name</label>
+  </div>
+  <div class="mb-3 form-floating">
+    <input
+      type="email"
+      class="form-control"
+      id="basic-url"
+      aria-describedby="Email"
+      placeholder="Email"
+      name="email"
+    />
+    <label for="basic-url" class="form-label">Email</label>
+  </div>
+  <div class="mb-3 form-floating">
+    <input
+      type="password"
+      class="form-control"
+      id="basic-url"
+      aria-describedby="Password"
+      placeholder="Password"
+      name="password"
+    />
+    <label for="basic-url" class="form-label">Password</label>
+  </div>
+  <button type="submit" class="btn btn-success btn-lg">Add</button>
+</form>
+{% if orders %}
+<div class="accordion accordion-flush" id="menuItems">
+    {% for customer in customers%}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="items_{{loop.index}}">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#toggle_{{loop.index}}"
+        aria-expanded="false"
+        aria-controls="toggle_{{loop.index}}"
+      >
+        {{customers[customer]}}
+      </button>
+    </h2>
+    <div
+      id="toggle_{{loop.index}}"
+      class="accordion-collapse collapse"
+      aria-labelledby="items_{{loop.index}}"
+      data-bs-parent="#menuItems"
+    >
+      <div class="accordion-body">
+        <ul class="row list-group">
+          <li class="col-6 list-group-item">
+            <div class="d-flex flex-column justify-content-between">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">  </th>
+                  </tr>
+                </thead>
+                {% set totals = [] %}
+                {% for id in orders %} {% if orders[id].email == customer %} {% set tmp = totals.append(orders[id].total) %}
+                <tbody>
+                  <tr>
+                    <th scope="row"></th>
+                    <td>{{orders[id].start_time}}</td>
+                    <td>{{orders[id].total}}</td>
+                    <td>
+                        <a href="{{url_for('delete_order', id=id)}}">
+                        <button class="btn text-danger">&cross;</button>
+                    </td>
+                  </tr>
+                </tbody>
+                {%endif%} {%endfor%} 
+              </table>
+              
+              <div class="d-flex justify-content-between">
+                  <span>Total: &#8377; {{ totals|sum() }}</span>
+                    
+                  </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %} No Orders to display! {% endif %} {% endblock %}
